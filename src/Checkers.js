@@ -338,6 +338,32 @@
   function undo(){
     present_fen = old_fens[present_number-1];
   }
+  function in_draw() {
+    if(moves().length == 0){
+      present_turn = oppositeColor(present_turn);
+      if(moves().length == 0){
+        return 1;
+      }
+      present_turn = oppositeColor(present_turn);
+    }
+    return 0;
+  }
+  function in_checkmate() {
+    if(present_fen == present_fen.toUpperCase() || present_fen == present_fen.toLowerCase()) {
+      return 1;
+    }
+    if(moves().length == 0){
+      present_turn = oppositeColor(present_turn);
+      if(moves().length != 0){
+        return 1;
+      }
+      present_turn = oppositeColor(present_turn);
+    }
+    return 0;
+  }
+  function is_game_over(){
+    return in_draw() || in_checkmate();
+  }
   Checkers.prototype.fenToObj = function (fen) {
     return fenToObj(fen);
   };
@@ -394,6 +420,18 @@
     present_number = 0;
     present_move = [];
     old_fens = [];
+  };
+  Checkers.prototype.in_check = function() {
+    return 0;
+  };
+  Checkers.prototype.in_draw = function() {
+    return in_draw();
+  };
+  Checkers.prototype.in_checkmate = function() {
+    return in_checkmate();
+  };
+  Checkers.prototype.in_game_over = function() {
+    return in_game_over();
   };
   window['Checkers'] = Checkers;
 })();
